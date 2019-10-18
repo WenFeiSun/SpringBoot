@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+</link>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>小区管理人员</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="/jQuery/jquery-3.4.1.min.js"></script>
+    <script src="/layui/layui.all.js"></script>
+    <script src="/js/waiterList.js"></script>
+</head>
+<body>
+<div class="box-title"><a href="#">首页</a>&gt;&gt;用户界面&gt;&gt;小区管理人</div>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-form">
+            <div class="layui-form-pane" style="margin-top: 10px;">
+                <input type="hidden" id="addindex" />
+                <!--新增按钮-->
+                <div>
+                    <button id="btnAdd" class="layui-btn" onclick="btnAdd()">新增</button>
+                </div>
+                <!--查询条件-->
+                <div class="demoForm">
+                    <label class="layui-form-label">用户名：</label>
+                    <div class="layui-inline">
+                        <input class="layui-input" name="userName" id="userName" autocomplete="off">
+                    </div>
+                    <button class="layui-btn" data-type="serchWaiterList" onclick="reloadTable();">搜索</button>
+                </div>
+                <!--数据展示table-->
+                <table class="layui-hide" id="tab1">
+                    <table class="layui-table" lay-filter="testaa" >
+                        <thead>
+                        <tr>
+                            <th lay-data="{field:'userName', sort: true}">用户名</th>
+                            <th lay-data="{field:'tel'}">电话</th>
+                            <th lay-data="{field:'age'}">年龄</th>
+                            <th lay-data="{field:'sex',templet: '#sexTpl'}">性别</th>
+                            <th lay-data="{field:'status', templet: '#ztTpl'}">状态</th>
+                            <th lay-data="{field:'des',rowspan:2}" >描述</th>
+                            <th lay-data="{field:'idCard'}">证据号</th>
+                            <th lay-data="{field:'idCardType', templet: '#idTypeTpl'}">证件类型</th>
+                            <th lay-data="{fixed:'right', toolbar: '#toolbarDemo', width:182}">操作</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <script type="text/html" id="sexTpl">
+                        {{# if(d.sex==='0'){ }}
+                        男 {{# }else if(d.sex === '1'){ }}
+                        女 {{# } }}
+                    </script>
+                    <script type="text/html" id="ztTpl">
+                        {{# if(d.status==='0'){ }}
+                        删除 {{# }else if(d.status === '1'){ }}
+                        拉黑 {{# }else if(d.status === '2'){ }}
+                        正常{{# } }}
+                    </script>
+                    <script type="text/html" id="idTypeTpl">
+                        {{# if(d.idCardType==='01'){ }}
+                        身份证 {{# }else if(d.idCardType === '02'){ }}
+                        暂住证 {{# }else if(d.idCardType === '03'){ }}
+                        港澳通行证{{# } }}
+                    </script>
+                    <script type="text/html" id="toolbarDemo">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="update">编辑</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
+                        </div>
+                    </script>
+                </table>
+            </div>
+            <div id="page1"></div>
+        </div>
+    </div>
+</div>
+
+<!--新增-->
+<div class="lay-row" style="display: none;padding: 20px;" id="addDialog">
+    <form class="layui-form" id="addForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red">*</span>名称:</label>
+            <div class="layui-input-block" for="wuserName" style="width: 240px;">
+                <input type="text" name="userName" id="wuserName" placeholder="名称" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red">*</span>电话:</label>
+            <div class="layui-input-block" for="tel" style="width: 240px;">
+                <input type="number" maxlength="32" id="tel" placeholder="电话" name="tel" lay-verify="required" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red">*</span>年龄:</label>
+            <div class="layui-input-block" style="width: 240px;" for="age">
+                <input type="number" maxlength="3" id="age" name="age" placeholder="年龄" lay-verify="required" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red">*</span>性别: </label>
+            <div class="layui-input-block" style="width: 240px;">
+                <select id="sex" name="sex" lay-verify="required">
+                    <option value="0">男</option>
+                    <option value="1">女</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red">*</span>证据类型: </label>
+            <div class="layui-input-block" style="width: 240px;">
+                <select id="idCardType" name="idCardType" lay-verify="required">
+                    <option value="01">身份证</option>
+                    <option value="02">暂住证</option>
+                    <option value="03">港澳通行证</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red">*</span>证件号:</label>
+            <div class="layui-input-block" for="idCard" style="width: 240px;">
+                <input type="text" name="idCard" id="idCard" placeholder="证件号" autocomplete="off" class="layui-input" lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red">*</span>状态:</label>
+            <div class="layui-input-block" for="status" style="width: 240px;">
+                <select id="status" name="status" lay-verify="required">
+                    <option value="2">正常</option>
+                    <option value="0">删除</option>
+                    <option value="1">拉黑</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span style="color: red">*</span>简介</label>
+            <div class="layui-input-block"  style="width: 240px;">
+                <textarea placeholder="请输入内容" class="layui-textarea" maxlength="150"  style="min-height: 30px;" id="des" name="des" ></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item" id="insertWaiter">
+            <label class="layui-form-label"></label>
+            <button class="layui-btn" lay-filter="addWaiter" lay-submit="">保存</button>
+        </div>
+    </form>
+</div>
+</body>
+<style>
+    .layui-form .layui-form-item .layui-input-block {overflow: inherit !important;}
+</style>
+</html>

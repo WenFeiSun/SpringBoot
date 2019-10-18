@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sun.common.dao.UserMapper" >
+    <resultMap id="BaseResultMap" type="com.sun.common.entity.User" >
+        <id column="T_USER_ID" property="userId" jdbcType="VARCHAR" />
+        <result column="T_USER_NAME" property="userName" jdbcType="VARCHAR" />
+        <result column="T_PASSWORD" property="pwd" jdbcType="VARCHAR" />
+        <result column="T_USER_TEL" property="userTel" jdbcType="VARCHAR" />
+        <result column="T_SALT" property="salt" jdbcType="VARCHAR" />
+
+        <!-- property表示集合类型属性名称，ofType表示集合中的对象是什么类型 -->
+        <!--user表一对多role表-->
+        <collection property="role" javaType="ArrayList" ofType="com.sun.common.entity.Role">
+            <id property="roleId" column="ROLE_ID"/>
+            <result property="roleName" column="ROLE_NAME"/>
+            <result property="userId" column="T_USER_ID"/>
+            <!--role表一对多auth表-->
+            <collection property="auth" javaType="ArrayList" ofType="com.sun.common.entity.Auth">
+                <id property="authId" column="AUTH_ID"/>
+                <result property="authName" column="AUTH_NAME"/>
+                <result property="roleId" column="ROLE_ID"/>
+                <!--auth表一对多resource表-->
+                <collection property="resource" javaType="ArrayList" column="AUTH_ID" ofType="com.sun.common.entity.Resource">
+                    <id property="resourceId" column="RESOURCE_ID"/>
+                    <result property="authId" column="AUTH_ID"/>
+                    <result property="resourceName" column="RESOURCE_NAME"/>
+                    <result property="resourcePath" column="RESOURCE_PATH"/>
+                </collection>
+            </collection>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List" >
+    T_USER_ID, T_USER_NAME, T_USER_TEL, T_PASSWORD, T_SALT
+  	</sql>
+    <select id="queryUserByUserNameAndPwd" resultMap="BaseResultMap" parameterType="com.sun.common.entity.User" >
+        select
+        <include refid="Base_Column_List" />
+        from T_USER
+        <where>
+            T_USER_NAME = #{userName,jdbcType=VARCHAR}
+            and T_PASSWORD = #{pwd,jdbcType=VARCHAR}
+        </where>
+    </select>
+    <!--根据用户名查用户信息-->
+    <select id="queryUserByUserName" resultMap="BaseResultMap" parameterType="com.sun.common.entity.User" >
+        select
+        <include refid="Base_Column_List" />
+        from T_USER
+        <where>
+            T_USER_NAME = #{userName,jdbcType=VARCHAR}
+        </where>
+    </select>
+    <!--根据用户id查权限-->
+    <select id="queryAuthListByUserName" resultMap="BaseResultMap" parameterType="com.sun.common.entity.User" >
+        select r.ROLE_NAME,a.AUTH_NAME,res.RESOURCE_NAME,res.RESOURCE_PATH
+          from(select * FROM t_user
+        where T_USER_ID=#{userId,jdbcType=VARCHAR})u
+        LEFT JOIN t_role r
+        on u.ROLE_ID=r.ROLE_ID
+        LEFT JOIN t_auth a
+        on r.AUTH_ID = a.AUTH_ID
+        LEFT JOIN t_resource res
+        on a.AUTH_ID = res.AUTH_ID
+    </select>
+</mapper>
