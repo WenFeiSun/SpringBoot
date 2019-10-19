@@ -1,4 +1,4 @@
-package com.wondersgroup.resdir.framework.datasource.config;
+package com.sun.control.web.common.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.wondersgroup.resdir.business.domain;
+package com.sun.control.web.common.entity;
 
 import java.util.Date;
 

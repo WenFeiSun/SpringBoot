@@ -2,6 +2,7 @@ package com.sun.control.web.service.impl;
 
 import com.sun.common.dao.WaiterMapper;
 import com.sun.common.entity.Waiter;
+import com.sun.control.web.common.annotation.DataSource;
 import com.sun.control.web.service.WaiterServie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,8 @@ public class WaiterServieImpl implements WaiterServie{
     }
 
     @Override
-    public Waiter queryUpdateWaiterByCode(String code) {
+    @DataSource
+    public Waiter queryUpdateWaiterByCode(String dataSourceId,String code) {
         return waiterMapper.queryUpdateWaiterByCode(code);
     }
 

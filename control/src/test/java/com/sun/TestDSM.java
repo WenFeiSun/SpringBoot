@@ -1,3 +1,4 @@
+/*
 package com.sun;
 
 import org.junit.Test;
@@ -32,12 +33,14 @@ public class TestDSM {
         try {
             result = net(url, params, "GET");
             System.out.println(result);
-            /*JSONObject object = JSONObject.fromObject(result);
+            */
+/*JSONObject object = JSONObject.fromObject(result);
             if(object.getInt("error_code")==0){
                 System.out.println(object.get("result"));
             }else{
                 System.out.println(object.get("error_code")+":"+object.get("reason"));
-            }*/
+            }*//*
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,14 +51,16 @@ public class TestDSM {
         mobileQuery();
     }
 
-    /**
+    */
+/**
      *
      * @param strUrl 请求地址
      * @param params 请求参数
      * @param method 请求方法
      * @return  网络请求字符串
      * @throws Exception
-     */
+     *//*
+
     public static String net(String strUrl, Map params,String method) throws Exception {
         HttpURLConnection conn = null;
         BufferedReader reader = null;
@@ -121,3 +126,4 @@ public class TestDSM {
         return sb.toString();
     }
 }
+*/

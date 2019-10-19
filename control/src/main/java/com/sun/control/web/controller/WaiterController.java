@@ -67,8 +67,9 @@ public class WaiterController {
      */
     @RequestMapping(value = "/updateWaiter",method = RequestMethod.POST)
     public Result updateWaiter(String code){
+        String dataSourceId = "sunwenfei123";
         try{
-            Waiter waiter = waiterServie.queryUpdateWaiterByCode(code);
+            Waiter waiter = waiterServie.queryUpdateWaiterByCode(dataSourceId,code);
             return ResultUtil.success(waiter);
         }catch (Exception e){
             e.printStackTrace();

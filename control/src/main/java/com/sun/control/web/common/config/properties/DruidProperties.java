@@ -1,8 +1,8 @@
-package com.wondersgroup.resdir.framework.config.properties;
+package com.sun.control.web.common.config.properties;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import com.alibaba.druid.pool.DruidDataSource;
 
 /**
  * druid 配置属性

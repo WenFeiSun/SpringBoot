@@ -1,4 +1,4 @@
-package com.wondersgroup.resdir.common.config.datasource;
+package com.sun.control.web.common.config.datasource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 数据源切换处理
  * 
- * @author wondersgroup
+ * @author sunwenfei
  */
 public class DynamicDataSourceContextHolder
 {

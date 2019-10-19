@@ -36,7 +36,7 @@ public interface WaiterServie {
      * @param code
      * @return
      */
-    Waiter queryUpdateWaiterByCode(String code);
+    Waiter queryUpdateWaiterByCode(String dataSourceId,String code);
 
     /**
      * 修改

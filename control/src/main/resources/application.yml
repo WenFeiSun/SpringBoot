@@ -1,57 +1,131 @@
-server.port = 8092
-#���������û�ȥ���ض����url������ʾJSESSIONID����
-server.servlet.session.tracking-modes = cookie
-server.servlet.session.cookie.http-only = true
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为80
+  port: 8090
+  servlet:
+    # 应用的访问路径
+    context-path: /
+    #servlet-path: /service/*
+ 
+# 日志配置
+logging:
+  level:
+    com.wondersgroup.resdir: debug
+    org.springframework: warn
 
-resources.static-locations = classpath:static/*/**
+# Spring配置
+spring:
+  # 服务模块
+  devtools:
+    restart:
+      # 热部署开关
+      enabled: true
+  profiles: #多个配置文件（多个配置文件以逗号隔开）
+    active: custom
 
-#���ݿ�����������Ϣ
-#spring.datasource.driverClassName = com.mysql.jdbc.Driver
-spring.datasource.driverClassName = com.mysql.jdbc.Driver
-spring.datasource.url=jdbc:mysql://localhost:3306/XIAO_QU?useUnicode=true&characterEncoding=UTF-8
-spring.datasource.username=root
-spring.datasource.password=abc123
-#spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
-
-#mybatis����
-mybatis.mapper-locations=classpath:mapper/*.xml
-mybatis.type-aliases-package=com.sun.common.entity
-mybatis.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
-
-#redis����
-# Redis���ݿ�������Ĭ��Ϊ0��
-spring.redis.database=0
-# Redis��������ַ
-spring.redis.host=127.0.0.1
-# Redis���������Ӷ˿�
-spring.redis.port=6379
-# Redis�������������루Ĭ��Ϊ�գ�
-spring.redis.password=abc123
-# ���ӳ������������ʹ�ø�ֵ��ʾû�����ƣ�
-spring.redis.jedis.pool.max-active=20
-# ���ӳ���������ȴ�ʱ�䣨ʹ�ø�ֵ��ʾû�����ƣ�
-spring.redis.jedis.pool.max-wait=-1ms
-# ���ӳ��е�����������
-spring.redis.jedis.pool.max-idle=10
-# ���ӳ��е���С��������
-spring.redis.jedis.pool.min-idle=0
-# ���ӳ�ʱʱ�䣨���룩
-spring.redis.timeout=1000ms
+  redis:
+    database: 0 # Redis数据库索引（默认为0）
+    host: 127.0.0.1 # Redis服务器地址
+    port: 6379 # Redis服务器连接端口
+    password: abc123 # Redis服务器连接密码（默认为空）
+    jedis:
+      pool:
+        max-active: 20 # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 10 # 连接池中的最大空闲连接
+        min-idle: 0 # 连接池中的最小空闲连接
+    timeout: 1000ms # 连接超时时间（毫秒）
 
 #=============== producer  =======================
-spring.kafka.producer.bootstrap-servers=127.0.0.1:9092
-spring.kafka.producer.retries=1
-spring.kafka.producer.batch-size=16384
-spring.kafka.producer.buffer-memory=33554432
-spring.kafka.producer.properties.max.requst.size=2097152
-spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
-spring.kafka.producer.value-serializer=org.apache.kafka.common.serialization.StringSerializer
+  kafka:
+    producer:
+      bootstrap-servers: 127.0.0.1:9092
+      retries: 1
+      batch-size: 16384
+      buffer-memory: 33554432
+      properties:
+        max:
+          request:
+            size: 2097152
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
-#=============== consumer  =======================
-spring.kafka.consumer.bootstrap-servers=127.0.0.1:9092
-spring.kafka.consumer.group-id=0
-spring.kafka.consumer.auto-offset-reset=earliest
-spring.kafka.consumer.enable-auto-commit=true
-spring.kafka.consumer.auto-commit-interval=100
-#=======set comsumer max fetch.byte 2*1024*1024=============
-spring.kafka.consumer.properties.max.partition.fetch.bytes=2097152
+  #=============== consumer  =======================
+  consumer:
+    bootstrap-servers: 127.0.0.1:9092
+    group-id: 0
+    auto-offset-reset: earliest
+    enable-auto-commit: true
+    auto-commit-interval: 100
+  #=======set comsumer max fetch.byte 2*1024*1024=============
+    properties:
+      max:
+        partition:
+          fetch:
+            bytes: 2097152
+
+  #======datasource===========================================
+  #数据库连接配置信息
+  #spring.datasource.driverClassName = com.mysql.jdbc.Driver
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    druid:
+    # 主库数据源
+      master:
+        url: jdbc:mysql://localhost:3306/XIAO_QU?useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: abc123
+      # 从库数据源
+      slave:
+        # 从数据源开关/默认关闭
+        enabled: false
+        url:
+        username:
+        password:
+      # 初始连接数
+      initialSize: 5
+      # 最小连接池数量
+      minIdle: 10
+      # 最大连接池数量
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      maxEvictableIdleTimeMillis: 900000
+      # 配置检测连接是否有效
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: true
+        # 设置白名单，不填则允许所有访问
+        allow:
+        url-pattern: /druid/*
+        # 控制台管理用户名和密码
+        login-username:
+        login-password:
+      filter:
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+
+# MyBatis
+mybatis:
+    # 搜索指定包别名
+    typeAliasesPackage: com.wondersgroup.common.entity
+    # 配置mapper的扫描，找到所有的mapper.xml映射文件
+    mapperLocations: classpath*:mapper/*.xml
