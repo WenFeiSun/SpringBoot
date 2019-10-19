@@ -1,0 +1,16 @@
+com\sun\common\dao\RoleMapper.class
+com\sun\common\utils\LuceneUtils.class
+com\sun\common\utils\ResultUtil.class
+com\sun\common\utils\RedisUitls.class
+com\sun\common\core\Result.class
+com\sun\common\dao\UserMapper.class
+com\sun\common\redis\RedisConfig.class
+com\sun\common\shiro\ShiroConfig.class
+com\sun\common\entity\Role.class
+com\sun\common\entity\User.class
+com\sun\common\shiro\ShiroRealm.class
+com\sun\common\InitDicBase.class
+com\sun\common\entity\Auth.class
+com\sun\common\entity\Resource.class
+com\sun\common\entity\Waiter.class
+com\sun\common\dao\WaiterMapper.class

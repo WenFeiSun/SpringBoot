@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sun.common.dao.WaiterMapper" >
+    <resultMap id="BaseResultMap" type="com.sun.common.entity.Waiter" >
+        <id column="W_CODE" property="code" jdbcType="VARCHAR" />
+        <result column="W_NAME" property="userName" jdbcType="VARCHAR" />
+        <result column="W_TEL" property="tel" jdbcType="VARCHAR" />
+        <result column="W_AGE" property="age" jdbcType="VARCHAR" />
+        <result column="W_SEX" property="sex" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="W_DSE" property="des" jdbcType="VARCHAR" />
+        <result column="W_IDCARD" property="idCard" jdbcType="VARCHAR" />
+        <result column="W_IDCARD_TYPE" property="idCardType" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+      W_CODE, W_NAME, W_TEL, W_AGE, W_SEX, STATUS, W_DSE, W_IDCARD, W_IDCARD_TYPE
+  	</sql>
+    <sql id="Base_Column_Insert" >
+      (W_CODE, W_NAME, W_TEL, W_AGE, W_SEX, STATUS, W_DSE, W_IDCARD, W_IDCARD_TYPE)
+  	</sql>
+    <select id="queryWaiterList" resultMap="BaseResultMap" parameterType="com.sun.common.entity.Waiter" >
+    select
+    <include refid="Base_Column_List" />
+    from T_WAITER
+    <where>
+        <if test="userName!=null and userName!=''">
+            W_NAME=#{userName,jdbcType=VARCHAR}
+        </if>
+    </where> limit #{startPage} ,#{endPage}
+    </select>
+    <select id="queryWaiterListCount" resultType="int">
+        select count(1)
+        from T_WAITER
+        <where>
+            <if test="userName!=null and userName!=''">
+                W_NAME=#{userName,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <!--根据身份证查用户-->
+    <select id="selectWaiterByIdCard" resultMap="BaseResultMap" parameterType="com.sun.common.entity.Waiter" >
+        select
+        <include refid="Base_Column_List" />
+        from T_WAITER
+        <where>
+            <if test="idCard!=null and idCard!=''">
+                W_IDCARD=#{idCard,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <!--新增操作-->
+    <insert id="saveWaiter" parameterType="java.lang.String">
+        insert into T_WAITER
+        <include refid="Base_Column_Insert" />
+        values (#{code,jdbcType=VARCHAR}, #{userName,jdbcType=DOUBLE},
+        #{tel,jdbcType=VARCHAR}, #{age,jdbcType=DOUBLE}, #{sex,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+        #{des,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{idCardType,jdbcType=VARCHAR})
+    </insert>
+    <!--删除操作-->
+    <delete id="deleteWaiter">
+        delete from T_WAITER where W_CODE = #{code,jdbcType=VARCHAR}
+    </delete>
+    <!--查修改对象-->
+    <select id="queryUpdateWaiterByCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from T_WAITER where w_code = #{code,jdbcType=VARCHAR}
+    </select>
+    <update id="updateWaiter">
+        update T_WAITER
+            set W_NAME = #{userName,jdbcType=VARCHAR},
+          W_TEL = #{tel,jdbcType=VARCHAR},
+          W_AGE = #{age,jdbcType=VARCHAR},
+          W_SEX = #{sex,jdbcType=VARCHAR},
+          STATUS = #{status,jdbcType=VARCHAR},
+          W_DSE = #{des,jdbcType=VARCHAR},
+          W_IDCARD = #{idCard,jdbcType=VARCHAR},
+          W_IDCARD_TYPE = #{idCardType,jdbcType=VARCHAR}
+        where W_CODE = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

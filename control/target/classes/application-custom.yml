@@ -1,0 +1,13 @@
+#数据库驱动包类路径
+dataBaseDriver:
+  driver1: oracle.jdbc.driver.OracleDriver
+  driver2: oracle.jdbc.driver.OracleDriver
+  driver3: oracle.jdbc.driver.OracleDriver
+  driver4: oracle.jdbc.driver.OracleDriver
+  driver5: oracle.jdbc.driver.OracleDriver
+  driver6: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  driver7: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  driver8: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  driver9: com.mysql.jdbc.Driver
+  driver10: com.mysql.cj.jdbc.Driver
+  driver11: com.mysql.cj.jdbc.Driver

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sun.common.dao.RoleMapper" >
+    <resultMap id="BaseResultMap" type="com.sun.common.entity.User" >
+        <id column="T_USER_ID" property="userId" jdbcType="VARCHAR" />
+        <result column="T_USER_NAME" property="userName" jdbcType="VARCHAR" />
+        <result column="T_PASSWORD" property="pwd" jdbcType="VARCHAR" />
+        <result column="T_USER_TEL" property="userTel" jdbcType="VARCHAR" />
+        <result column="T_SALT" property="salt" jdbcType="VARCHAR" />
+
+        <!-- property表示集合类型属性名称，ofType表示集合中的对象是什么类型 -->
+        <!--user表一对多role表-->
+        <collection property="role" column="T_USER_ID" javaType="ArrayList" select="selectAllRoles">
+        </collection>
+    </resultMap>
+    <!--user表一对多role表-->
+    <resultMap id="queryRoleListResultMap" type="com.sun.common.entity.Role">
+        <id property="roleId" column="ROLE_ID"/>
+        <result property="roleName" column="ROLE_NAME"/>
+        <result property="userId" column="T_USER_ID"/>
+        <!--user表一对多role表-->
+        <collection property="auth" column="ROLE_ID" javaType="ArrayList" select="selectAllpermissions">
+        </collection>
+    </resultMap>
+    <!--role表一对多auth表-->
+    <resultMap id="queryAuthListResultMap" type="com.sun.common.entity.Auth" >
+        <id property="authId" column="AUTH_ID"/>
+        <result property="authName" column="AUTH_NAME"/>
+        <result property="roleId" column="ROLE_ID"/>
+        <!--role表一对多auth表-->
+        <collection property="resource" column="AUTH_ID" javaType="ArrayList" select="selectAllResource">
+        </collection>
+    </resultMap>
+    <!--auth表一对多resource表-->
+    <resultMap id="queryResourceListResultMap" type="com.sun.common.entity.Resource" >
+        <id property="resourceId" column="RESOURCE_ID"/>
+        <result property="authId" column="AUTH_ID"/>
+        <result property="resourceName" column="RESOURCE_NAME"/>
+        <result property="resourcePath" column="RESOURCE_PATH"/>
+        <result property="target" column="TARGET"/>
+    </resultMap>
+    <!--根据用户名查用户信息-->
+    <select id="queryUserByUserName" resultMap="BaseResultMap" parameterType="com.sun.common.entity.User" >
+        select * from T_USER
+        <where>
+            T_USER_NAME = #{userName,jdbcType=VARCHAR}
+        </where>
+    </select>
+    <!--根据用户中的角色查询角色-->
+    <select id="selectAllRoles" resultMap="queryRoleListResultMap" parameterType="java.lang.String">
+        select * from t_role where ROLE_ID in (select u.ROLE_ID from t_role u where u.T_USER_ID=#{T_USER_ID})
+    </select>
+    <!--根据角色id查询权限(先从角色权限关联表查询角色id相等，在查询权限id，根据权限id在权限表里查询权限)-->
+    <select id="selectAllpermissions" resultMap="queryAuthListResultMap" parameterType="java.lang.String">
+        select * from t_auth where AUTH_ID in (select r.AUTH_ID from t_auth r where r.ROLE_ID=#{ROLE_ID})
+     </select>
+    <select id="selectAllResource" resultMap="queryResourceListResultMap" parameterType="java.lang.String">
+        select * from t_resource where AUTH_ID in (select r.AUTH_ID from t_resource r where r.AUTH_ID=#{AUTH_ID})
+     </select>
+</mapper>
