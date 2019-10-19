@@ -1,0 +1,37 @@
+#权限系统配置
+authclient:
+  url: http://10.2.6.13:8301/auth/service/webService
+  #后台管理系统节点代码
+  name: RES_DIR
+  #前台门户系统节点代码
+  door: RES_SHARE
+
+#ESB接口参数
+ESBparam:
+  #是否使用esb，0是，1否
+  isUseESB: 0
+  URL: http://172.16.90.196:8803/apiGatewayCenter-web/service/api/gateService/
+  userId: zyml001
+  userName: 资源目录
+  orgCode: '027'
+  publishApiUrl: http://172.16.90.196:8803/apiGatewayCenter-web/service/api/gateApi/handleAddApi
+  deleteApiUrl: http://172.16.90.196:8803/apiGatewayCenter-web/service/api/gateApi/handleDelApi
+  #资源目录管理api接口发布地址
+  apiUrlPrefix: http://127.0.0.1:8090/service
+  
+#数据库驱动包类路径
+dataBaseDriver:
+  driver1: oracle.jdbc.driver.OracleDriver
+  driver2: oracle.jdbc.driver.OracleDriver
+  driver3: oracle.jdbc.driver.OracleDriver
+  driver4: oracle.jdbc.driver.OracleDriver
+  driver5: oracle.jdbc.driver.OracleDriver
+  driver6: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  driver7: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  driver8: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  driver9: com.mysql.cj.jdbc.Driver
+  driver10: com.mysql.cj.jdbc.Driver
+  driver11: com.mysql.cj.jdbc.Driver
+#前台API接口服务地址
+APIparam:
+  apiUrl: http://10.1.192.91:6080
