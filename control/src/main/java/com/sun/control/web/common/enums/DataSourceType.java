@@ -3,7 +3,7 @@ package com.sun.control.web.common.enums;
 /**
  * 数据源
  * 
- * @author wondersgroup
+ * @author sunwenfei
  */
 public enum DataSourceType
 {

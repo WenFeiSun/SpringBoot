@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 /**
  * 自定义多数据源切换注解
  * 
- * @author wondersgroup
+ * @author sunwenfei
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 
 /**
  * 自定义日志注解
- * @author liuyazhuang
+ * @author sunwenfei
  *
  */
 @Target({ElementType.PARAMETER, ElementType.METHOD})
